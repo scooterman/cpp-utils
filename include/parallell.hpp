@@ -15,15 +15,15 @@
  *    along with corvogame.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * 
- *    Paralell: simple synchronization mechanism based on x10 ideas
+ *    Parallel: simple synchronization mechanism based on x10 ideas
  *    usage:
  *
- *    //FOR UNSYNCHRONIZED PARALELL execution:
+ *    //FOR UNSYNCHRONIZED PARALLEL execution:
  *    cpp_utils::paraell ( function_to_be_called )
  *   
- *   //FOR SYNCHRONIZED PARALELL execution:
+ *   //FOR SYNCHRONIZED PARALLEL execution:
  *   cpp_utils::synched_t synch;
- *   cpp_utils::paralell ( synch, function_to_be_called )
+ *   cpp_utils::parallel ( synch, function_to_be_called )
  */
 
 #pragma once
@@ -159,18 +159,17 @@ struct apply_obj_func<0>
     }
 };
 
-
-struct async
+struct parallel
 {
     template <typename synched_t, typename function_t>
-    async (synched_t& sb, function_t func)
+    parallel (synched_t& sb, function_t func)
     {
         contended_caller<function_t>& cc = * new (tbb::task::allocate_root()) contended_caller<function_t>(sb, func);
         tbb::task::spawn(cc);
     }
 
     template < typename function_t>
-    async (function_t func)
+    parallel (function_t func)
     {
         simple_caller<function_t>& sc = * new (tbb::task::allocate_root()) simple_caller<function_t>(func);
         tbb::task::spawn(sc);
@@ -178,7 +177,7 @@ struct async
     
     
     template <typename synched_t, typename function_t, typename... parameters>
-    async(synched_t& sb, function_t f, parameters... params)
+    parallel(synched_t& sb, function_t f, parameters... params)
     {
         class forwarded_callable : public tbb::task
         {
@@ -204,7 +203,7 @@ struct async
     }
 
     template <typename function_t, typename... parameters>
-    async(function_t f, parameters... params)
+    parallel(function_t f, parameters... params)
     {
         class forwarded_callable : public tbb::task
         {
