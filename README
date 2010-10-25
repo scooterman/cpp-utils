@@ -1,0 +1,9 @@
+cpp-utils: Simple utilities for the average C++ programmer
+
+for now, I'm releasing the paralell functions, useful for spawning threads of execution. It relies on thread building blocks, the posix semaphore API and uses c++0x variadic template stuff.
+
+feel free to contact me at victor.v.carvalho at gmail dot com
+
+
+Greetings,
+Victor
