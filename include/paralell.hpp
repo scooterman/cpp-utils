@@ -1,6 +1,33 @@
+/*    This file is part of cpp-utils
+ *    Copyright (c) 2010 Victor Vicente de Carvalho <victor.v.carvalho@gmail.com>
+ * 
+ *    cpp-utils is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    cpp-utils is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with corvogame.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * 
+ *    Paralell: simple synchronization mechanism based on x10 ideas
+ *    usage:
+ *
+ *    //FOR UNSYNCHRONIZED PARALELL execution:
+ *    cpp_utils::paraell ( function_to_be_called )
+ *   
+ *   //FOR SYNCHRONIZED PARALELL execution:
+ *   cpp_utils::synched_t synch;
+ *   cpp_utils::paralell ( synch, function_to_be_called )
+ */
+
 #pragma once
 
-#include <boost/interprocess/detail/atomic.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 
@@ -10,6 +37,10 @@
 
 #include <tbb/atomic.h>
 #include <tbb/task.h>
+
+
+namespace cpp_utils
+{
 
 struct scope_waiter
 {
@@ -30,10 +61,6 @@ struct scope_waiter
 
 protected:
     sem_t& mr_sem;
-};
-
-struct unsynched_t
-{
 };
 
 struct synched_t
@@ -201,3 +228,5 @@ struct async
         tbb::task::spawn(sc);
     }
 };
+
+} // namespace cpp_utils
